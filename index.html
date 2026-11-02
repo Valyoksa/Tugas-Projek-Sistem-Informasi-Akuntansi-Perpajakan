@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perpustakaan FV UNY - Sistem Layanan Mandiri</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Merriweather:wght@700;900&display=swap');
+:root{--navy:#11224f;--nd:#050b1e;--blue:#2563eb;--bl:#60a5fa;--acc:#f59e0b;--g:#059669;--r:#dc2626;--gr:#64748b;--bg:#f1f5f9;--ff:'Nunito',system-ui,sans-serif;--sf:'Merriweather',Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--bg);color:#334155;min-height:100vh}
+.top{background:linear-gradient(135deg,var(--nd),var(--navy));color:#fff;position:sticky;top:0;z-index:50;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo{width:44px;height:44px;border-radius:50%;background:var(--acc);color:var(--navy);display:grid;place-items:center;font-weight:900;flex-shrink:0}
+.brand b{display:block;font-size:.95rem}.brand small{opacity:.75;font-size:.72rem}
+.srch{flex:1;min-width:200px;max-width:480px;display:flex;background:rgba(255,255,255,.13);border-radius:50px;overflow:hidden}
+.srch input{flex:1;background:transparent;border:0;color:#fff;padding:9px 16px;font:inherit;outline:none;min-width:0}
+.srch input::placeholder{color:rgba(255,255,255,.6)}
+.srch button{border:0;background:rgba(255,255,255,.2);color:#fff;font:inherit;font-weight:700;padding:0 16px;cursor:pointer}
+nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.nb{background:none;border:0;color:#fff;font:inherit;font-weight:700;padding:8px 14px;border-radius:50px;cursor:pointer}
+.nb:hover{background:rgba(255,255,255,.12)}
+.nb.acc{background:var(--acc);color:var(--navy)}
+.view{display:none}.view.on{display:block}
+.hero{background:linear-gradient(135deg,var(--nd),var(--navy) 60%,var(--blue));color:#fff;text-align:center;padding:54px 20px 44px}
+.hero h1{font-family:var(--sf);font-size:2.1rem;margin-bottom:8px}
+.hero p{opacity:.9;margin-bottom:26px}
+.hsrch{max-width:600px;margin:0 auto;display:flex;background:#fff;border-radius:50px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.hsrch input{flex:1;border:0;padding:15px 22px;font:inherit;font-size:1rem;outline:none;color:#334155;min-width:0}
+.hsrch button{border:0;background:var(--blue);color:#fff;font:inherit;font-weight:800;padding:0 26px;cursor:pointer}
+.stats{display:flex;gap:30px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.stats strong{display:block;font-size:1.35rem}.stats span{font-size:.78rem;opacity:.85}
+.wrap{max-width:1200px;margin:0 auto;padding:28px 20px}
+h2.st{font-family:var(--sf);color:var(--navy);font-size:1.1rem;margin:0 0 16px;display:flex;align-items:center;gap:10px}
+h2.st:after{content:"";flex:1;height:2px;background:linear-gradient(to right,var(--bl),transparent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px;margin-bottom:34px}
+.card{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(10,22,53,.08);overflow:hidden;cursor:pointer;transition:.2s;border:1.5px solid #e2e8f0}
+.card:hover{transform:translateY(-3px);border-color:var(--bl)}
+.cov{height:150px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:#fff;padding:10px;text-align:center}
+.cov small{font-size:.7rem;font-weight:700;margin-top:6px;display:block}
+.ci{padding:12px}.ci b{font-size:.84rem;color:var(--navy);display:block;line-height:1.35;margin-bottom:3px}.ci span{font-size:.74rem;color:var(--gr)}
+.tag{display:inline-block;font-size:.66rem;font-weight:800;padding:2px 9px;border-radius:50px;margin-top:4px}
+.ok{background:#d1fae5;color:var(--g)}.no{background:#fee2e2;color:var(--r)}.eb{background:#dbeafe;color:#1e40af}.nl{background:#fef3c7;color:#b45309}
+.btn{border:0;border-radius:50px;padding:9px 18px;font:inherit;font-weight:800;font-size:.84rem;cursor:pointer;color:#fff;background:var(--blue)}
+.btn.g{background:var(--g)}.btn.r{background:var(--r)}.btn.o{background:#fff;color:var(--blue);border:2px solid var(--blue)}.btn.acc{background:var(--acc);color:var(--navy)}
+.btn.sm{padding:6px 12px;font-size:.76rem}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:22px;max-width:1200px;margin:0 auto;padding:24px 20px}
+.box{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(10,22,53,.08);padding:20px;margin-bottom:18px}
+.box h3{font-family:var(--sf);font-size:.98rem;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #e2e8f0}
+.row{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #f1f5f9;flex-wrap:wrap}
+.row:last-child{border:0}
+.row .info{flex:1;min-width:150px}.row b{color:var(--navy);font-size:.9rem;display:block}.row small{color:var(--gr);font-size:.76rem}
+.dt{width:100%;border-collapse:collapse;font-size:.84rem}
+.dt th{background:#f8fafc;text-align:left;padding:9px 10px;font-size:.72rem;text-transform:uppercase;color:var(--gr)}
+.dt td{padding:10px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.side{background:linear-gradient(180deg,var(--nd),var(--navy));border-radius:14px;padding:12px;height:fit-content}
+.side button{display:block;width:100%;text-align:left;background:none;border:0;color:rgba(255,255,255,.8);font:inherit;font-weight:700;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:.86rem}
+.side button:hover{background:rgba(255,255,255,.1);color:#fff}
+.side button.on{background:linear-gradient(135deg,var(--blue),var(--bl));color:#fff}
+.cnt{float:right;background:var(--acc);color:var(--navy);border-radius:50px;font-size:.66rem;padding:1px 7px;font-weight:900}
+.det{display:grid;grid-template-columns:240px 1fr;gap:24px}
+.big{height:300px;border-radius:12px;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:16px;font-size:3rem}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;font-size:.84rem}.kv div{padding:6px 0;border-bottom:1px dashed #e2e8f0}.kv b{color:var(--gr);font-size:.7rem;text-transform:uppercase;display:block}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.sd{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 4px 16px rgba(10,22,53,.08)}
+.sd small{color:var(--gr);font-weight:700;font-size:.76rem}.sd b{font-size:1.45rem;color:var(--navy);display:block;margin-top:4px}
+.mo{position:fixed;inset:0;background:rgba(5,11,30,.6);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.mo.on{display:flex}
+.mb{background:#fff;border-radius:16px;width:100%;max-width:460px;max-height:90vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.mh{background:linear-gradient(135deg,var(--nd),var(--navy));color:#fff;padding:16px 20px;border-radius:16px 16px 0 0}
+.mh h3{font-family:var(--sf);font-size:1rem}.mh small{opacity:.8}
+.mbd{padding:20px}
+.mf{display:flex;gap:10px;justify-content:flex-end;padding:0 20px 20px;flex-wrap:wrap}
+.in{width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font:inherit;margin-bottom:12px;outline:none;background:#fff}
+.in:focus{border-color:var(--blue)}
+.l{font-size:.8rem;font-weight:800;color:var(--navy);display:block;margin-bottom:5px}
+.note{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:10px 12px;font-size:.8rem;color:#1e3a8a;margin-bottom:14px}
+.warn{background:#fef3c7;border-color:#fcd34d;color:#78350f}
+.err{display:none;color:var(--r);font-size:.8rem;font-weight:700;margin-bottom:10px}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;font-size:.86rem;box-shadow:0 8px 24px rgba(0,0,0,.3);transform:translateY(140px);transition:.3s;z-index:300;max-width:340px}
+.toast.on{transform:none}.toast.e{background:var(--r)}.toast.i{background:#334155}
+.empty{text-align:center;padding:30px;color:var(--gr)}
+.flip{background:#faf7f2;border-radius:12px;padding:26px;min-height:260px;font-family:var(--sf);line-height:1.8;color:#2c2c2c;font-size:.95rem}
+.flip h4{font-family:var(--ff);color:var(--navy);margin:8px 0}
+@media(max-width:820px){.layout,.det{grid-template-columns:1fr}.side{display:flex;flex-wrap:wrap;gap:4px}.side button{width:auto}.cnt{float:none;margin-left:4px}.sg{grid-template-columns:repeat(2,1fr)}.dt{font-size:.78rem}.hero h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand" onclick="go('home')"><div class="logo">FV</div><div><b>FAKULTAS VOKASI</b><small>Universitas Negeri Yogyakarta</small></div></div>
+  <div class="srch"><input id="q" placeholder="Cari judul, pengarang, atau subyek…" onkeydown="if(event.key==='Enter')search(this.value)"><button onclick="search(q.value)">CARI</button></div>
+  <nav>
+    <button class="nb" onclick="go('home')">Beranda</button>
+    <button class="nb" onclick="showList(B,'Semua Koleksi')">Koleksi</button>
+    <button class="nb" onclick="needLogin(()=>go('dash'))">Dashboard</button>
+    <button class="nb acc" id="loginBtn" onclick="show('mLogin')">Masuk SSO</button>
+  </nav>
+</header>
+
+<!-- HOME -->
+<section id="v-home" class="view on">
+  <div class="hero">
+    <h1>Perpustakaan Digital FV UNY</h1>
+    <p>Temukan ribuan koleksi buku, jurnal, dan ebook Fakultas Vokasi</p>
+    <div class="hsrch"><input id="hq" placeholder="mis. Akuntansi Biaya, Pajak…" onkeydown="if(event.key==='Enter')search(this.value)"><button onclick="search(hq.value)">CARI</button></div>
+    <div class="stats"><div><strong>2.847</strong><span>Total Koleksi</span></div><div><strong>312</strong><span>Ebook</span></div><div><strong>184</strong><span>Jurnal</span></div><div><strong>1.420</strong><span>Anggota Aktif</span></div></div>
+  </div>
+  <div class="wrap">
+    <h2 class="st">📖 Koleksi Fisik Terbaru</h2><div class="grid" id="gFisik"></div>
+    <h2 class="st">💻 Ebook Populer</h2><div class="grid" id="gEbook"></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="v-res" class="view">
+  <div class="hero" style="padding:28px 20px"><h1 id="rT" style="font-size:1.4rem">Koleksi</h1><p id="rInfo"></p></div>
+  <div class="layout">
+    <aside class="box" style="height:fit-content">
+      <h3>🔍 Filter</h3>
+      <label class="l">Tipe Koleksi</label>
+      <label><input type="checkbox" class="ft" value="f" checked> Buku Fisik</label><br>
+      <label><input type="checkbox" class="ft" value="e" checked> Ebook</label>
+      <label class="l" style="margin-top:14px">Ketersediaan</label>
+      <label><input type="checkbox" id="fAv"> Hanya yang tersedia</label>
+      <label class="l" style="margin-top:14px">Tahun Terbit</label>
+      <select id="fYr" class="in"><option value="">Semua</option><option value="2020">2020 – sekarang</option><option value="2010">2010 – 2019</option><option value="2000">2000 – 2009</option></select>
+      <button class="btn sm" style="width:100%" onclick="applyF()">Terapkan Filter</button>
+    </aside>
+    <div id="rL"></div>
+  </div>
+</section>
+
+<!-- DETAIL -->
+<section id="v-det" class="view">
+  <div class="wrap">
+    <button class="btn o sm" onclick="back()">← Kembali</button>
+    <div style="height:14px"></div>
+    <div class="det">
+      <div><div class="box" id="dCov" style="padding:14px"></div><div class="box" id="dAct"></div></div>
+      <div>
+        <div class="box"><h2 id="dT" style="font-family:var(--sf);color:var(--navy);font-size:1.35rem"></h2><p id="dA" style="color:var(--blue);font-weight:700;margin:6px 0 14px"></p><div class="kv" id="dKv"></div></div>
+        <div class="box"><h3>Ketersediaan</h3><div style="overflow-x:auto" id="dAv"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="v-dash" class="view">
+  <div class="layout" style="grid-template-columns:230px 1fr">
+    <aside class="side" id="side"></aside>
+    <main id="dMain"></main>
+  </div>
+</section>
+
+<!-- MODALS -->
+<div class="mo" id="mLogin"><div class="mb">
+  <div class="mh"><h3>Masuk dengan SSO UNY</h3><small>Gunakan UNY ID &amp; password yang sama dengan SIAKAD</small></div>
+  <div class="mbd">
+    <div class="note">Isikan <b>username@student.uny.ac.id</b> (Mahasiswa) atau <b>username@uny.ac.id</b> (Staff)</div>
+    <label class="l">UNY ID</label><input class="in" id="lE" placeholder="Email UNY">
+    <label class="l">Password</label><input class="in" id="lP" type="password" placeholder="Password SSO" onkeydown="if(event.key==='Enter')doLogin()">
+  </div>
+  <div class="mf"><button class="btn o" onclick="hide('mLogin')">Batal</button><button class="btn g" onclick="doLogin()">Masuk</button></div>
+</div></div>
+
+<div class="mo" id="mAsk"><div class="mb">
+  <div class="mh"><h3 id="aT"></h3></div>
+  <div class="mbd" id="aM"></div>
+  <div class="mf"><button class="btn o" onclick="hide('mAsk')">Batal</button><button class="btn" onclick="okA()">Ya, Lanjutkan</button></div>
+</div></div>
+
+<div class="mo" id="mPre"><div class="mb">
+  <div class="mh"><h3>Aktivasi Kode Akses Ebook</h3><small>Apakah Anda sudah mengaktifkan kode akses?</small></div>
+  <div class="mbd"><div class="note">Untuk membuka <b>flipbook ebook</b>, Anda memerlukan kode akses yang dikirim ke WhatsApp.</div>
+    <button class="btn g" style="width:100%;margin-bottom:10px" onclick="hide('mPre');show('mVer')">✓ Sudah mengaktifkan kode</button>
+    <button class="btn" style="width:100%" onclick="hide('mPre');show('mReq')">+ Belum, ajukan kode akses</button>
+  </div>
+  <div class="mf"><button class="btn o" onclick="hide('mPre')">Batal</button></div>
+</div></div>
+
+<div class="mo" id="mReq"><div class="mb">
+  <div class="mh"><h3>Ajukan Kode Akses Ebook</h3><small>Verifikasi nomor WhatsApp &amp; NIM Anda</small></div>
+  <div class="mbd">
+    <label class="l">📱 Nomor WhatsApp aktif (min. 10 angka)</label><input class="in" id="rW" placeholder="08xxxxxxxxxx atau +628xxxxxxxxx">
+    <label class="l">🆔 NIM (11 digit)</label><input class="in" id="rNim" maxlength="11" inputmode="numeric" placeholder="Contoh: 22504334011">
+    <div class="err" id="rE"></div>
+  </div>
+  <div class="mf"><button class="btn o" onclick="hide('mReq')">Batal</button><button class="btn g" onclick="reqSubmit()">Lanjut →</button></div>
+</div></div>
+
+<div class="mo" id="mVer"><div class="mb">
+  <div class="mh"><h3>Verifikasi Kode Akses</h3><small>Masukkan kode yang dikirim ke WhatsApp</small></div>
+  <div class="mbd">
+    <label class="l">🔑 Kode akses (NIM, 11 digit)</label><input class="in" id="vN" maxlength="11" inputmode="numeric" placeholder="Masukkan kode akses">
+    <div class="err" id="vE"></div>
+  </div>
+  <div class="mf"><button class="btn o" onclick="hide('mVer')">Batal</button><button class="btn" onclick="verSubmit()">Verifikasi Akses</button></div>
+</div></div>
+
+<div class="mo" id="mRead"><div class="mb" style="max-width:600px">
+  <div class="mh"><h3>📖 Flipbook Ebook — Pratinjau</h3></div>
+  <div class="mbd"><div class="flip" id="rB"></div></div>
+  <div class="mf" style="justify-content:space-between;align-items:center"><button class="btn o sm" id="rP" onclick="rn(-1)">‹ Sebelumnya</button><small id="pgI" style="color:var(--gr);font-weight:700"></small><button class="btn sm" id="rN" onclick="rn(1)">Berikutnya ›</button></div>
+</div></div>
+
+<div class="mo" id="mPay"><div class="mb">
+  <div class="mh"><h3>Konfirmasi Pembayaran Denda</h3><small>Pastikan detail denda sudah benar</small></div>
+  <div class="mbd" id="pBody"></div>
+  <div class="mf"><button class="btn o" onclick="hide('mPay')">Batal</button><button class="btn g" id="pOk">Bayar</button></div>
+</div></div>
+
+<div class="mo" id="mProp"><div class="mb" style="max-width:600px">
+  <div class="mh"><h3 id="pT">Pengajuan Buku Baru</h3><small>Pengajuan akan ditinjau oleh petugas perpustakaan</small></div>
+  <div class="mbd">
+    <div id="fId">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px">
+        <div><label class="l">Nama Lengkap *</label><input class="in" id="fN"></div>
+        <div><label class="l">NIM *</label><input class="in" id="fNim" maxlength="11" inputmode="numeric"></div>
+        <div><label class="l">Departemen *</label><select class="in" id="fDept" onchange="fillPr()"><option value="">— Pilih departemen —</option></select></div>
+        <div><label class="l">Program Studi *</label><select class="in" id="fPr"><option value="">— Pilih departemen dahulu —</option></select></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px">
+      <div style="grid-column:1/-1"><label class="l">Judul Buku *</label><input class="in" id="fT" placeholder="Judul lengkap buku"></div>
+      <div><label class="l">Edisi (opsional)</label><input class="in" id="fEd" placeholder="Contoh: Edisi 5"></div>
+      <div><label class="l">Tahun Terbit *</label><input class="in" id="fYr" maxlength="4" inputmode="numeric" placeholder="Contoh: 2023"></div>
+      <div style="grid-column:1/-1"><label class="l">Pengarang *</label><input class="in" id="fAu" placeholder="Nama pengarang"></div>
+    </div>
+    <div class="err" id="pErr"></div>
+  </div>
+  <div class="mf"><button class="btn o" onclick="hide('mProp')">Batal</button><button class="btn g" onclick="saveProp()">Kirim Pengajuan</button></div>
+</div></div>
+
+<div class="mo" id="mFu"><div class="mb" style="max-width:420px">
+  <div class="mh"><h3>Tindak Lanjut e-Book</h3><small>Buku fisik sudah disetujui. e-Book masih dalam proses pengadaan.</small></div>
+  <div class="mbd">
+    <button class="btn" style="width:100%;margin-bottom:10px" onclick="fu('pantau')">👁 Pantau e-book — kirim notifikasi saat tersedia</button>
+    <button class="btn o" style="width:100%" onclick="fu('tutup')">✓ Tutup pengajuan — cukup buku fisik</button>
+  </div>
+</div></div>
+
+<div class="toast" id="tt"></div>
+
+<script>
+const $=i=>document.getElementById(i);
+const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const show=i=>$(i).classList.add('on');
+const hide=i=>{$(i).classList.remove('on');if(i=='mLogin')S.pend=null};
+const today=()=>new Date().toISOString().slice(0,10);
+const addD=(s,n)=>{const d=new Date(s);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const MN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const fmt=s=>{const[y,m,d]=s.split('-');return +d+' '+MN[m-1]+' '+y};
+const late=s=>Math.max(0,Math.round((new Date(today())-new Date(s))/864e5));
+const rp=n=>'Rp '+n.toLocaleString('id-ID');
+const bk=i=>B.find(b=>b[0]==i);
+const g=c=>'linear-gradient(135deg,#'+c.replace(',',',#')+')';
+const NOLOAN=[2];
+const PM=['Tunai ke petugas perpustakaan','QRIS (GoPay, OVO, Dana)','VA BNI 8277 1234 5678 9012','VA BRI 0889 9876 5432 1000','VA Mandiri 8900 2468 1357 9753','VA BCA 7820 1111 2222 3333','VA BSI 4567 8888 9999 0001'];
+const DP={'Departemen Bisnis dan Keuangan':['D4 - Administrasi Perkantoran','D4 - Akuntansi','D4 - Manajemen Pemasaran'],'Departemen Olahraga dan Kesehatan':['D4 - Pengelolaan Usaha Rekreasi','D4 - Pengobatan Tradisional Indonesia','D4 - Promosi Kesehatan'],'Departemen Tata Boga, Tata Busana dan Tata Rias':['D4 - Tata Boga','D4 - Tata Busana','D4 - Tata Rias'],'Departemen Teknik Mesin dan Otomotif':['D4 - Teknik Mesin','D4 - Teknik Otomotif'],'Departemen Teknik Elektro dan Elektronika':['D4 - Teknik Elektro','D4 - Teknik Elektronika'],'Departemen Teknik Sipil':['D4 - Teknik Sipil']};
+const ST={open:['Baru','#dbeafe','#1d4ed8'],in_progress:['Diproses','#fef3c7','#b45309'],physical_approved:['Fisik OK · eBook Proses','#cffafe','#0e7490'],done:['Selesai','#dcfce7','#15803d']};
+
+// [id,judul,pengarang,tahun,penerbit,no.panggil,tipe(f=fisik,e=ebook),tersedia,total,emoji,warna]
+const B=[
+[1,'Akuntansi Manajemen','Azmia Laily; H. Anwar; Sri Reno dkk.',2021,'Deepublish','658.1511 Lai a','f',3,4,'📕','1e3a8a,3b82f6'],
+[2,'Sistem Pengendalian Manajemen','Kenneth A. Merchant; Wim A. Van der Stede',2014,'Salemba Empat','658.4013 Mer s','f',1,3,'📗','065f46,10b981'],
+[3,'Akuntansi Sektor Publik','Abdul Halim; Muhammad Syam Kusufi',2018,'Salemba Empat','657.835 Hal a','f',2,2,'📘','7c2d12,dc2626'],
+[4,'Akuntansi Biaya','Mulyadi',2018,'UPP STIM YKPN','657.42 Mul a','f',0,2,'📙','78350f,d97706'],
+[5,'Pengantar Akuntansi 2 Berbasis IFRS','Jerry J. Weygandt; Paul D. Kimmel; Donald E. Kieso',2019,'Salemba Empat','657 Wey p 2','f',1,1,'💻','9a3412,f97316'],
+[6,'Pengantar Manajemen dan Bisnis','Ali Sadikin; Isra Misra; Muhammad Sholeh Hudin',2020,'K-Media','658 Sad p','f',3,3,'💼','1e293b,475569'],
+[7,'Akuntansi Perbankan','Pipit Novila Sari; Astrid Aprica Isabella',2020,'Insan Cendekia Mandiri','657.8333 Sar a','f',2,3,'🏦','0c4a6e,0284c7'],
+[8,'Akuntansi Syariah di Indonesia','Sri Nurhayati; Wasilah',2019,'Salemba Empat','297.273 Nur a','f',1,2,'📿','0f4c3a,059669'],
+[9,'Akuntansi Perpajakan','Sukrisno Agoes; Estralita Trisnawati',2017,'Salemba Empat','657.46 Ago a','f',1,2,'📊','7f1d1d,dc2626'],
+[10,'Studi Kelayakan Bisnis','Husein Umar',2015,'Gramedia Pustaka Utama','658.404 Uma s','f',0,2,'📈','7c2d12,a16207'],
+[11,'Sistem Informasi Akuntansi','Marshall B. Romney; Paul John Steinbart',2015,'Salemba Empat','657.028 Rom s','f',2,3,'🖥️','581c87,a855f7'],
+[12,'Manajemen Perpajakan: Strategi Perencanaan Pajak dan Bisnis','Chairil Anwar Pohan',2018,'Gramedia Pustaka Utama','658.153 Poh m','f',2,2,'📋','0f172a,334155'],
+[13,'Hukum Bisnis','Sri Zanariyah; Masayu Robianti; Febriansyah',2021,'Pena Persada','346.07 Zan h','e',999,999,'⚖️','1e3a8a,3b82f6'],
+[14,'Pengantar Statistika Ekonomi dan Bisnis','Mungahid Doddiyawan',2018,'UPP STIM YKPN','519.5 Mun p 1','f',2,3,'📊','1e40af,60a5fa'],
+[15,'Akuntansi UMKM dan Koperasi: Berbasis SAK EMKM & SAK Entitas Privat','Dwi Martani; Sylvia Veronica Siregar dkk.',2022,'Salemba Empat','657.9 Mar a','e',999,999,'🤝','7c2d12,ea580c'],
+[16,'Akuntansi Keuangan Menengah Berbasis PSAK','Dwi Martani; Sylvia Veronica Siregar dkk.',2018,'Salemba Empat','657.044 Mar a 1','e',999,999,'📚','0c4a6e,0ea5e9'],
+[17,'Akuntansi Keuangan Lanjutan','Elna M Pattinaja; Hempry Putuhena; M. Rifki Fuazan',2022,'Insan Cendekia Mandiri','657.046 Pat a','e',999,999,'📈','0e7490,06b6d4'],
+[18,'Akuntansi Keperilakuan','Arfan Ikhsan; Muhammad Ishak',2018,'Salemba Empat','657.0019 Ikh a','f',2,3,'🧠','1e3a8a,6366f1'],
+[19,'Akuntansi Pemerintahan','Indra Bastian',2019,'Salemba Empat','657.835 Bas a','f',1,2,'🏛️','7f1d1d,dc2626'],
+[20,'Auditing','Sukrisno Agoes',2017,'Salemba Empat','657.45 Ago a','f',0,3,'🔍','0f172a,475569'],
+[21,'Administrasi Perpajakan','Safri Nurmantu',2020,'Granit','336.2 Nur a','f',3,3,'💼','831843,db2777'],
+[22,'Hukum Pajak','Y. Sri Pudyatmoko',2021,'Salemba Empat','343.04 Pud h','e',999,999,'⚖️','365314,65a30d'],
+[23,'Pengantar Ekonomi Makro','N. Gregory Mankiw',2018,'Salemba Empat','339 Man p','f',2,4,'📈','0c4a6e,0ea5e9'],
+[24,'Pengantar Ekonomi Mikro','N. Gregory Mankiw',2018,'Salemba Empat','338.5 Man p','f',1,3,'📊','7c2d12,f97316'],
+[25,'Pengantar Ilmu Administrasi','Inu Kencana Syafiie',2019,'Mandar Maju','351 Sya p','e',999,999,'📚','581c87,a855f7'],
+[26,'Administrasi Publik','Yeremias T. Keban',2020,'Gava Media','351.598 Keb a','f',2,2,'🏢','134e4a,14b8a6'],
+[27,'Hukum Administrasi Pemerintahan','Ridwan HR',2021,'Rajawali Pers','342.06 Rid h','e',999,999,'📜','3f3f46,71717a']
+];
+
+// Satu sumber state. Denda pinjaman berjalan dihitung dari jatuh tempo; catatan tagihan (S.fines) dibuat saat buku dikembalikan terlambat.
+const S={in:false,pend:null,page:'ov',dq:'',rq:'',user:'01234567890',
+loans:[{id:1,b:1,bor:'2026-02-05',due:'2026-02-12'},{id:2,b:3,bor:'2026-03-01',due:'2026-03-08'},{id:3,b:11,bor:'2026-04-09',due:'2026-04-16'}],
+res:[{id:1,b:4,d:'2026-04-10'}],
+hist:[{b:7,bor:'2025-02-01',ret:'2025-02-08',fine:0},{b:9,bor:'2025-01-10',ret:'2025-01-21',fine:2000}],
+fines:[{id:1,b:9,days:4,fine:2000},{id:2,b:7,days:12,fine:6000},{id:3,b:8,days:3,fine:1500}],
+props:[
+{id:'PR-2026-001',n:'Badriatus Soleha',nim:'22504334011',pr:'D4 - Akuntansi',t:'Pajak Daerah & Retribusi Daerah',ed:'Edisi 2',au:'Marihot Pahala Siahaan, S.E., M.T.',yr:'2010',st:'open',d:'2026-04-22',fu:''},
+{id:'PR-2026-002',n:'Hadna Andy Al Falasany',nim:'21512012015',pr:'D4 - Teknik Elektronika',t:'Sistem Kontrol Industri Berbasis PLC',ed:'',au:'I Nyoman Priyanto',yr:'2021',st:'in_progress',d:'2026-04-19',fu:''},
+{id:'PR-2026-003',n:'User 1234',nim:'01234567890',pr:'D4 - Akuntansi',t:'Manajemen Keuangan Lanjutan',ed:'Edisi 3',au:'Suad Husnan',yr:'2022',st:'in_progress',d:'2026-04-20',fu:''},
+{id:'PR-2026-004',n:'Salsabila Putri Maharani',nim:'23504334078',pr:'D4 - Manajemen Pemasaran',t:'Perilaku Konsumen di Era Digital',ed:'',au:'Ujang Sumarwan',yr:'2023',st:'physical_approved',d:'2026-04-12',fu:''},
+{id:'PR-2026-005',n:'User 1234',nim:'01234567890',pr:'D4 - Akuntansi',t:'Audit Sistem Informasi',ed:'Edisi 2',au:'Sanyoto Gondodiyoto',yr:'2020',st:'physical_approved',d:'2026-04-08',fu:''},
+{id:'PR-2026-006',n:'Rizky Ahmad Pratama',nim:'22504334155',pr:'D4 - Tata Boga',t:'Sanitasi & Higiene Industri Pangan',ed:'',au:'Tim Penulis IPB',yr:'2019',st:'done',d:'2026-03-28',fu:'pantau'}]};
+
+let CUR='home',PREV='home',DID=0,LIST=[],EB=0,RP=[],RI=0,PMD={},TT,ASK=null;
+
+function go(v){if(v=='det'&&CUR!='det')PREV=CUR;CUR=v;document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));$('v-'+v).classList.add('on');if(v=='dash')renderDash();scrollTo(0,0)}
+function back(){go(PREV)}
+function refresh(){nav();if(CUR=='dash')renderDash();if(CUR=='det')detail(DID)}
+function toast(m,t){const e=$('tt');e.textContent=m;e.className='toast on'+(t=='e'?' e':t=='i'?' i':'');clearTimeout(TT);TT=setTimeout(()=>e.classList.remove('on'),3200)}
+function ask(t,h,f){$('aT').textContent=t;$('aM').innerHTML=h;ASK=f;show('mAsk')}
+function okA(){const f=ASK;ASK=null;hide('mAsk');if(f)f()}
+function needLogin(f){if(S.in)f();else{S.pend=f;show('mLogin')}}
+function nav(){const b=$('loginBtn');b.textContent=S.in?'Keluar':'Masuk SSO';b.onclick=S.in?logout:()=>show('mLogin')}
+function doLogin(){const e=$('lE').value.trim(),p=$('lP').value.trim();
+  if(!e||!p)return toast('Isi email dan password','e');
+  if(!e.includes('uny.ac.id'))return toast('Gunakan email UNY (@student.uny.ac.id atau @uny.ac.id)','e');
+  S.in=true;hide('mLogin');nav();toast('Login berhasil! Selamat datang, User');
+  const f=S.pend;S.pend=null;if(f)f();else go('dash')}
+function logout(){S.in=false;nav();go('home');toast('Anda telah keluar dari sistem.','i')}
+
+// ---------- katalog ----------
+const card=b=>{const[id,t,a,y,p,c,ty,av,tot,em,col]=b;
+  const tg=ty=='e'?'<span class="tag eb">📱 Ebook</span>':av==0?'<span class="tag no">Tidak Tersedia</span>':NOLOAN.includes(id)?'<span class="tag nl">No Loan</span>':`<span class="tag ok">✓ Tersedia (${av})</span>`;
+  return `<div class="card" onclick="detail(${id})"><div class="cov" style="background:${g(col)}"><div>${em}<small>${t.length>40?t.slice(0,38)+'…':t}</small></div></div><div class="ci"><b>${t}</b><span>${a.split(';')[0]}</span><br>${tg}</div></div>`};
+function search(q){q=(q||'').trim();if(!q)return toast('Masukkan kata kunci pencarian','e');
+  showList(B.filter(b=>(b[1]+' '+b[2]+' '+b[5]).toLowerCase().includes(q.toLowerCase())),'Hasil pencarian: "'+E(q)+'"')}
+function showList(l,t){LIST=l;$('rT').textContent=t;go('res');applyF()}
+function applyF(){const ty=[...document.querySelectorAll('.ft:checked')].map(i=>i.value);const av=$('fAv').checked,yr=+$('fYr').value;
+  const r=LIST.filter(b=>ty.includes(b[6])&&(!av||b[6]=='e'||b[7]>0)&&(!yr||(b[3]>=yr&&b[3]<=(yr==2020?9999:yr+9))));
+  $('rInfo').textContent=r.length+' dari '+LIST.length+' koleksi';
+  $('rL').innerHTML=`<div class="grid">${r.map(card).join('')||'<div class="empty">Tidak ada koleksi yang sesuai filter</div>'}</div>`}
+
+function detail(id){DID=id;const b=bk(id);const[,t,a,y,p,c,ty,av,tot,em,col]=b;
+  $('dCov').innerHTML=`<div class="big" style="background:${g(col)}">${em}<small style="font-size:.9rem;margin-top:10px;font-weight:700">${t}</small></div>`;
+  let act;
+  if(ty=='e')act=`<button class="btn" style="width:100%;margin-bottom:8px" onclick="openEbook(${id})">📖 Baca Ebook</button>`;
+  else if(NOLOAN.includes(id))act='<div class="note">Koleksi No Loan — hanya baca di tempat.</div>';
+  else if(av>0)act=`<button class="btn" style="width:100%;margin-bottom:8px" onclick="borrow(${id})">📗 Pinjam Buku Ini</button><button class="btn o" style="width:100%" onclick="reserve(${id})">🔖 Reservasi</button>`;
+  else act=`<div class="note warn">⏳ Semua eksemplar sedang dipinjam.</div><button class="btn acc" style="width:100%" onclick="reserve(${id})">🔖 Masuk Antrian Reservasi</button>`;
+  $('dAct').innerHTML=act+`<button class="btn o sm" style="width:100%;margin-top:8px" onclick="cite(${id})">Cite This</button>`;
+  $('dT').textContent=t;$('dA').textContent=a.split(';').join(' · ');
+  $('dKv').innerHTML=[['No. Panggil',c],['Penerbit',p+', '+y],['Tahun',y],['Tipe',ty=='e'?'Ebook':'Buku Fisik']].map(([k,v])=>`<div><b>${k}</b>${v}</div>`).join('');
+  let rows='';
+  if(ty=='e')rows=`<tr><td>E-BOOK-${String(id).padStart(4,'0')}</td><td>${c}</td><td>Perpustakaan Digital</td><td><span class="tag eb">Tersedia Online</span></td></tr>`;
+  else for(let i=0;i<tot;i++){const st=NOLOAN.includes(id)&&i==0?'<span class="tag nl">No Loan</span>':i<av?'<span class="tag ok">Tersedia</span>':'<span class="tag no">Dipinjam</span>';rows+=`<tr><td>03211025${70+i+id}</td><td>${c}</td><td>Perpustakaan Kampus Wates</td><td>${st}</td></tr>`}
+  $('dAv').innerHTML=`<table class="dt"><tr><th>No. Registrasi</th><th>No. Panggil</th><th>Lokasi</th><th>Status</th></tr>${rows}</table>`;
+  go('det')}
+function cite(id){const b=bk(id);toast(`${b[2]} (${b[3]}). ${b[1]}. ${b[4]}.`,'i')}
+function renderHome(){$('gFisik').innerHTML=B.filter(b=>b[6]=='f').slice(0,12).map(card).join('');$('gEbook').innerHTML=B.filter(b=>b[6]=='e').map(card).join('')}
+
+// ---------- aksi peminjaman (satu alur untuk fisik) ----------
+function borrow(id){needLogin(()=>{const b=bk(id);
+  if(S.loans.some(l=>l.b==id))return toast('Anda sudah meminjam buku ini','e');
+  if(b[7]<1)return toast('Eksemplar habis, silakan reservasi','e');
+  ask('Konfirmasi Peminjaman',`Pinjam "<b>${b[1]}</b>"?<br>Durasi <b>7 hari</b> · denda keterlambatan <b>Rp 500/hari</b>`,()=>{
+    S.loans.push({id:Date.now(),b:id,bor:today(),due:addD(today(),7)});b[7]--;
+    toast('Berhasil dipinjam. Kembalikan sebelum '+fmt(addD(today(),7)));refresh()})})}
+function reserve(id){needLogin(()=>{const b=bk(id);
+  if(S.res.some(r=>r.b==id))return toast('Anda sudah punya reservasi untuk buku ini','e');
+  ask('Konfirmasi Reservasi',`Reservasi "<b>${b[1]}</b>"?<br>Anda akan masuk antrian dan dinotifikasi saat buku tersedia.`,()=>{
+    S.res.push({id:Date.now(),b:id,d:today()});toast('Reservasi berhasil! Posisi antrian #'+S.res.filter(r=>r.b==id).length);refresh()})})}
+function cancelRes(id){S.res=S.res.filter(r=>r.id!=id);toast('Reservasi dibatalkan.','i');refresh()}
+function ret(lid){const l=S.loans.find(x=>x.id==lid),d=late(l.due),f=d*500;
+  ask('Konfirmasi Pengembalian',`Kembalikan "<b>${bk(l.b)[1]}</b>"?<br>Jatuh tempo: ${fmt(l.due)}`+
+    (d?`<div class="note warn" style="margin-top:12px">Terlambat ${d} hari · denda <b>${rp(f)}</b> akan tercatat.</div>`:'<div class="note" style="margin-top:12px">Tepat waktu, tidak ada denda.</div>'),()=>{
+    S.loans=S.loans.filter(x=>x!==l);S.hist.unshift({b:l.b,bor:l.bor,ret:today(),fine:f});
+    if(f)S.fines.push({id:Date.now(),b:l.b,days:d,fine:f});
+    const bb=bk(l.b);bb[7]++;
+    toast(f?'Buku dikembalikan. Bayar denda '+rp(f):'Buku dikembalikan. Terima kasih!');refresh()})}
+function payFine(id){const f=S.fines.find(x=>x.id==id);
+  $('pBody').innerHTML=`<div class="note">Denda buku "<b>${bk(f.b)[1]}</b>" · ${f.days} hari · <b>${rp(f.fine)}</b></div><label class="l">Metode pembayaran</label><select class="in">${PM.map(m=>`<option>${m}</option>`).join('')}</select>`;
+  $('pOk').onclick=()=>{S.fines=S.fines.filter(x=>x!==f);hide('mPay');toast('Pembayaran '+rp(f.fine)+' tercatat lunas');refresh()};
+  show('mPay')}
+
+// ---------- ebook: satu alur akses (pratinjau -> kode akses -> pembaca) ----------
+function openEbook(id){needLogin(()=>{EB=id;show('mPre')})}
+function reqSubmit(){const w=$('rW').value.trim(),n=$('rNim').value.trim(),e=$('rE');
+  if(!(/^(08|\+62)/.test(w)&&w.replace(/\D/g,'').length>=10)){e.textContent='Nomor WhatsApp tidak valid (min. 10 angka, diawali 08 atau +62)';e.style.display='block';return}
+  if(!/^\d{11}$/.test(n)){e.textContent='NIM harus 11 digit angka';e.style.display='block';return}
+  S.rq=n;e.style.display='none';hide('mReq');toast('Kode akses dikirim. Masukkan kembali untuk verifikasi.');show('mVer')}
+function verSubmit(){const v=$('vN').value.trim(),e=$('vE');let m='';
+  if(!S.rq)m='Belum ada kode yang diajukan. Ajukan kode akses terlebih dahulu.';
+  else if(v!==S.rq)m='Kode tidak cocok dengan yang Anda ajukan sebelumnya.';
+  if(m){e.textContent=m;e.style.display='block';return}
+  e.style.display='none';hide('mVer');openReader(EB)}
+function openReader(id){const b=bk(id);
+  RP=[`<div style="text-align:center;padding:24px 0"><div style="font-size:3.5rem">${b[9]}</div><h2 style="font-family:var(--ff);color:var(--navy);margin:12px 0">${b[1]}</h2><p>oleh ${b[2]}</p></div>`,
+  `<h4>Kata Pengantar</h4><p>Buku ini membantu mahasiswa Fakultas Vokasi UNY memahami konsep dan praktik di bidang <b>${b[1]}</b>.</p>`,
+  `<h4>Daftar Isi</h4><ol><li>Pendahuluan</li><li>Konsep Dasar</li><li>Kerangka Teoretis</li><li>Studi Kasus dan Penerapan</li><li>Kesimpulan</li></ol>`,
+  `<h4>Catatan Pratinjau</h4><p>Ini hanya pratinjau. Isi lengkap tersedia di Perpustakaan FV UNY.</p>`];
+  RI=0;rd();show('mRead')}
+function rd(){$('rB').innerHTML=RP[RI];$('pgI').textContent=`Halaman ${RI+1} / ${RP.length}`;$('rP').disabled=RI==0;$('rN').disabled=RI>=RP.length-1}
+function rn(d){RI=Math.min(RP.length-1,Math.max(0,RI+d));rd()}
+
+// ---------- pengajuan buku (satu form) ----------
+function fillPr(){const d=DP[$('fDept').value]||[];$('fPr').innerHTML='<option value="">— Pilih program studi —</option>'+d.map(x=>`<option>${x}</option>`).join('')}
+function openProp(m,id){PMD={m,id};const p=m=='new'?null:S.props.find(x=>x.id==id);
+  $('fId').style.display=m=='rev'?'none':'';
+  $('fDept').innerHTML='<option value="">— Pilih departemen —</option>'+Object.keys(DP).map(k=>`<option>${k}</option>`).join('');
+  $('fN').value=p?p.n:'User 1234';$('fNim').value=p?p.nim:S.user;$('fDept').value='';fillPr();
+  $('fT').value=p?p.t:'';$('fEd').value=p?p.ed:'';$('fAu').value=p?p.au:'';$('fYr').value=p?p.yr:'';
+  $('pErr').style.display='none';$('pT').textContent=m=='new'?'Pengajuan Buku Baru':'Revisi Data Buku';show('mProp')}
+function saveProp(){const m=PMD.m,v=x=>$(x).value.trim(),e=[];
+  if(m!='rev'){if(!v('fN'))e.push('nama');if(!/^\d{11}$/.test(v('fNim')))e.push('NIM 11 digit');if(!v('fDept'))e.push('departemen');if(!v('fPr'))e.push('program studi')}
+  if(!v('fT'))e.push('judul');if(!v('fAu'))e.push('pengarang');if(!/^\d{4}$/.test(v('fYr')))e.push('tahun terbit (4 digit)');
+  if(e.length){$('pErr').textContent='Lengkapi: '+e.join(', ');$('pErr').style.display='block';return}
+  if(m=='rev'){Object.assign(S.props.find(x=>x.id==PMD.id),{t:v('fT'),ed:v('fEd'),au:v('fAu'),yr:v('fYr')})}
+  else S.props.unshift({id:'PR-2026-'+String(S.props.length+1).padStart(3,'0'),n:v('fN'),nim:v('fNim'),pr:v('fPr'),t:v('fT'),ed:v('fEd'),au:v('fAu'),yr:v('fYr'),st:'open',d:today(),fu:''});
+  hide('mProp');toast(m=='rev'?'Revisi data buku disimpan.':'Pengajuan terkirim. Status: Baru');refresh()}
+function openFu(id){PMD={id};show('mFu')}
+function fu(c){const p=S.props.find(x=>x.id==PMD.id);p.fu=c;if(c=='tutup')p.st='done';hide('mFu');
+  toast(c=='pantau'?'Anda akan dinotifikasi saat e-book tersedia.':'Pengajuan ditutup. Terima kasih.');refresh()}
+
+// ---------- dashboard ----------
+const rowB=(b,sub,r)=>`<div class="row"><div style="width:44px;height:60px;border-radius:6px;background:${g(b[10])};display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">${b[9]}</div><div class="info"><b>${b[1]}</b><small>${sub}</small></div>${r||''}</div>`;
+const sd=(l,v)=>`<div class="sd"><small>${l}</small><b>${v}</b></div>`;
+const loansT=L=>L.length?`<div style="overflow-x:auto"><table class="dt"><tr><th>Buku</th><th>Pinjam</th><th>Jatuh Tempo</th><th>Status</th><th></th></tr>${L.map(l=>{const b=bk(l.b),d=late(l.due);return `<tr><td><b>${b[1]}</b><br><small>${b[2].split(';')[0]}</small></td><td>${fmt(l.bor)}</td><td>${fmt(l.due)}</td><td>${d?`<span class="tag no">Terlambat ${d} hari · ${rp(d*500)}</span>`:'<span class="tag ok">Aktif</span>'}</td><td><button class="btn r sm" onclick="ret(${l.id})">Kembalikan</button></td></tr>`}).join('')}</table></div>`:'<div class="empty">Tidak ada pinjaman aktif</div>';
+const propT=()=>`<div style="overflow-x:auto"><table class="dt"><tr><th>#</th><th>Pengaju</th><th>Buku Diajukan</th><th>Tanggal</th><th>Status</th><th></th></tr>${S.props.map((p,i)=>{const s=ST[p.st],mine=p.nim==S.user;
+  let a='';if(mine&&p.st=='in_progress')a=`<button class="btn sm o" onclick="openProp('rev','${p.id}')">Revisi</button>`;
+  if(mine&&p.st=='physical_approved'&&!p.fu)a=`<button class="btn sm acc" onclick="openFu('${p.id}')">Tindak Lanjut</button>`;
+  return `<tr><td>${i+1}</td><td><b>${E(p.n)}</b>${mine?' <span class="tag" style="background:var(--acc);color:var(--navy)">SAYA</span>':''}<br><small>${p.nim} · ${p.pr}</small></td><td><b>${E(p.t)}</b><br><small>${E(p.au)}${p.ed?' · '+E(p.ed):''} · ${p.yr}</small></td><td>${fmt(p.d)}</td><td><span class="tag" style="background:${s[1]};color:${s[2]}">${s[0]}</span></td><td>${a||'—'}</td></tr>`}).join('')}</table></div>`;
+const PG={
+ov:()=>`<div class="box" style="background:linear-gradient(135deg,var(--nd),var(--navy));color:#fff;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="logo" style="width:56px;height:56px;font-size:1.2rem">US</div><div><div style="font-family:var(--sf);font-size:1.2rem">Selamat Datang User 1234!</div><small>Mahasiswa Aktif · NIM 01234567890 · D4 - XXXXX · Angkatan 202x · Kelas X - Kampus daerah</small></div></div>
+<div class="sg">${sd('Pinjaman Aktif',S.loans.length)}${sd('Total Pinjaman',S.hist.length+S.loans.length)}${sd('Terlambat',S.loans.filter(l=>late(l.due)>0).length)}${sd('Tagihan Denda',rp(S.fines.reduce((a,f)=>a+f.fine,0)))}</div>
+<div class="box"><h3>📗 Pinjaman Aktif</h3>${loansT(S.loans.slice(0,3))}</div>`,
+cari:()=>`<div class="box"><h3>🔍 Cari & Pinjam Buku</h3><div style="display:flex;gap:10px"><input class="in" style="margin:0" id="dq" value="${E(S.dq)}" placeholder="Judul, pengarang, atau nomor panggil…" onkeydown="if(event.key==='Enter')dsearch()"><button class="btn" onclick="dsearch()">Cari</button></div></div><div id="dRes"></div>`,
+loans:()=>`<div class="box"><h3>📗 Pinjaman Aktif Saya</h3>${loansT(S.loans)}</div>`,
+res:()=>`<div class="box"><h3>🔖 Reservasi Aktif</h3>${S.res.map(r=>rowB(bk(r.b),'Antrian sejak '+fmt(r.d),`<button class="btn r sm" onclick="cancelRes(${r.id})">Batalkan</button>`)).join('')||'<div class="empty">Tidak ada reservasi aktif</div>'}</div>`,
+ret:()=>`<div class="box"><h3>↩️ Kembalikan Buku</h3><div class="note">Denda keterlambatan: <b>Rp 500/hari</b> per buku.</div>${loansT(S.loans)}</div>`,
+fines:()=>`<div class="box"><h3>💰 Tagihan Denda</h3>${S.fines.length?`<div style="overflow-x:auto"><table class="dt"><tr><th>Buku</th><th>Terlambat</th><th>Total</th><th></th></tr>${S.fines.map(f=>`<tr><td><b>${bk(f.b)[1]}</b></td><td>${f.days} hari</td><td style="color:var(--r);font-weight:800">${rp(f.fine)}</td><td><button class="btn g sm" onclick="payFine(${f.id})">Bayar</button></td></tr>`).join('')}</table></div><p style="text-align:right;margin-top:12px;font-weight:900;color:var(--r)">Total: ${rp(S.fines.reduce((a,f)=>a+f.fine,0))}</p>`:'<div class="empty">Tidak ada tunggakan denda 🎉</div>'}</div>`,
+hist:()=>`<div class="box"><h3>📋 Riwayat Pinjaman</h3>${S.hist.length?`<div style="overflow-x:auto"><table class="dt"><tr><th>Buku</th><th>Pinjam</th><th>Kembali</th><th>Denda</th></tr>${S.hist.map(h=>`<tr><td><b>${bk(h.b)[1]}</b></td><td>${fmt(h.bor)}</td><td>${fmt(h.ret)}</td><td>${h.fine?`<span style="color:var(--r);font-weight:700">${rp(h.fine)}</span>`:'<span style="color:var(--g)">–</span>'}</td></tr>`).join('')}</table></div>`:'<div class="empty">Belum ada riwayat</div>'}</div>`,
+late:()=>`<div class="box"><h3>⚠️ Daftar Keterlambatan</h3>${loansT(S.loans.filter(l=>late(l.due)>0))}</div>`,
+prop:()=>`<div class="box"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px"><h3 style="margin:0;border:0;padding:0">📝 Status Pengajuan</h3><button class="btn sm" onclick="openProp('new')">+ Tambah Pengajuan</button></div>${propT()}</div>`
+};
+function renderDash(){
+  const lateN=S.loans.filter(l=>late(l.due)>0).length,mine=S.props.filter(p=>p.nim==S.user&&p.st!='done').length;
+  const items=[['ov','🏠 Beranda',0],['cari','🔍 Cari Buku',0],['loans','📗 Pinjaman Aktif',S.loans.length],['res','🔖 Reservasi Buku',S.res.length],['ret','↩️ Kembalikan Buku',0],['fines','💰 Denda & Pembayaran',S.fines.length],['hist','📋 Riwayat Pinjaman',0],['late','⚠️ Keterlambatan',lateN],['prop','📝 Pengajuan Buku',mine],['out','🚪 Keluar',0]];
+  $('side').innerHTML=items.map(([k,l,c])=>`<button class="${S.page==k?'on':''}" onclick="${k=='out'?'logout()':"dpage('"+k+"')"}">${l}${c?` <span class="cnt">${c}</span>`:''}</button>`).join('');
+  $('dMain').innerHTML=PG[S.page]();
+  if(S.page=='cari')dsearch();
+}
+function dpage(k){S.page=k;renderDash()}
+function dsearch(){S.dq=$('dq').value;const q=S.dq.toLowerCase();
+  const r=B.filter(b=>(b[1]+' '+b[2]+' '+b[5]).toLowerCase().includes(q));
+  $('dRes').innerHTML=`<div class="box">${r.map(b=>{let a;
+    if(b[6]=='e')a=`<button class="btn sm" onclick="openEbook(${b[0]})">📖 Baca</button>`;
+    else if(NOLOAN.includes(b[0]))a='<span class="tag nl">No Loan</span>';
+    else if(b[7]>0)a=`<button class="btn sm" onclick="borrow(${b[0]})">📗 Pinjam</button>`;
+    else a=`<button class="btn sm acc" onclick="reserve(${b[0]})">🔖 Reservasi</button>`;
+    return rowB(b,b[2].split(';')[0]+' · '+b[5],a)}).join('')||'<div class="empty">Tidak ditemukan</div>'}</div>`}
+
+// ---------- init ----------
+renderHome();nav();
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)hide(m.id)}));
+document.querySelectorAll('select#fYr,.ft,#fAv').forEach(el=>el.addEventListener('change',()=>{if(CUR=='res')applyF()}));
+</script>
+</body>
+</html>
